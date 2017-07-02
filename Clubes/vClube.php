@@ -89,6 +89,8 @@ function myFunction() {
 
   </div>
  </div>
+ <?php if ($PriC == "1") { ?>
+
  <div class="page-container">
   <div class="page-content">
    <div class="content-wrapper">
@@ -377,7 +379,14 @@ function myFunction() {
 
 	</div>
 	<!-- /page container -->
-
+   <?php } else{
+    echo '
+     <div class="alert alert-danger alert-styled-left alert-bordered">
+      <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Fechar</span></button>
+      <h3><span class="text-semibold">Opa!</span> Não foi possível acessar a página! Você não possui privilégios para isso.</h3>.
+     </div>';
+  }
+    ?>
 </body>
  <!-- Core JS files -->
  <script type="text/javascript" src="../assets/js/plugins/loaders/pace.min.js"></script>

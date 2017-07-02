@@ -84,7 +84,7 @@
   			     $CadastraLogin = $db->query("INSERT INTO users (name, email, username, password, dist, codAss) VALUES('$name', '$mSocio', '$mSocio', '$CrySenha', '$Distrito', '$codSocio')");
   			     if ($CadastraLogin) {
   			      //SE O LOGIN FOI CRIADO, AGORA DEVEMOS COLOCAR PARA ELE OS PRIVILEGIOS
-  			      $InserePriv = $db->query("INSERT INTO priv (user, priA, priC, priD, PriP) VALUES ('$mSocio', '0', '0', '0', '0') ");
+  			      $InserePriv = $db->query("INSERT INTO priv (user, priA, priC, priD, PriP, codAss) VALUES ('$mSocio', '0', '0', '0', '0', '$codSocio') ");
   			       if ($InserePriv) {
           include "../assets/email/PHPMailerAutoload.php";           //chamando a lib
            $mail = new PHPMailer();// Inicia a classe PHPMailer

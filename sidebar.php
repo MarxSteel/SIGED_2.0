@@ -33,20 +33,22 @@
 		<li <?php echo $aDist; ?>>
 		 <a href="#"><i class="icon-cog"></i> <span>Distrito <?php echo $Distrito; ?></span></a>
 	      <ul>
+	      <?php if ($PriD == "1") { ?>
 		   <li <?php echo $aDDistrito; ?>><a href="<?php echo $server; ?>Distrito/dashboard.php">
-		    <i class="icon-cog"></i>Distrito</a></li>	      
+		    <i class="icon-cog"></i>Distrito</a></li>
+	      <?php } else { } if ($PriC == "1") { ?>
 		   <li <?php echo $aDClube; ?>><a href="<?php echo $server; ?>Clubes/dashboard.php">
 		    <i class="icon-flag3"></i>Clubes</a></li>
+	      <?php } else { } if ($PriA == "1") { ?>
 		   <li <?php echo $aDSocio; ?>><a href="<?php echo $server; ?>Associados/dashboard.php">
 		    <i class="icon-users2"></i>Associados</a></li>
-		   <li <?php echo $aDProjeto; ?>><a href="<?php echo $server; ?>Projetos/dashboard.php">
-		    <i class="icon-users2"></i>Projetos</a></li>
+	      <?php } else { } if ($PriP == "1") { ?>		    
+		   <!--<li <?php echo $aDProjeto; ?>><a href="<?php echo $server; ?>Projetos/dashboard.php">
+		    <i class="icon-users2"></i>Projetos</a></li>-->
+	      <?php } else { } ?>
+
 		  </ul>
 		</li>
-		<li <?php echo $aUser; ?>>
-		 <a href="<?php echo $server; ?>dashboard.php">
-		 <i class="icon-user"></i> <span>Usuários</span></a>
-		</li>		
 	   </ul>
 	  </div>
 	 </div>

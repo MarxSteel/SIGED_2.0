@@ -17,3 +17,7 @@
 
 
 500 - Cadastrado novo membro da equipe distrital
+501 - Concedido Acesso à página de clubs
+502 - Retirado Acesso à página de clubs
+503 - Concedido Acesso à página de Associados
+504 - Retirado Acesso à página de Associados
