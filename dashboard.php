@@ -95,6 +95,7 @@ color:white;
    <?php include_once 'sidebar.php'; ?>
    <div class="content-wrapper">
     <div class="content">
+    <?php if ($PriC == "1") { ?>
      <div class="col-md-4 col-xs-12">
       <div class="panel panel-body bg-blue-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
@@ -107,6 +108,7 @@ color:white;
 	   </div>
 	  </div>
      </div>
+	<?php } else { } if ($PriA == "1") { ?>
      <div class="col-md-4 col-xs-12">
       <div class="panel panel-body bg-green-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
@@ -119,12 +121,12 @@ color:white;
 	   </div>
 	  </div>
      </div>
+	<?php } else { } if ($PriD == "1") { ?>     
      <div class="col-md-4 col-xs-12">
       <div class="panel panel-body bg-orange-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
 	   <a href="Distrito/dashboard.php" target="_blank" class="media-left media-middle" color="#ffffff">
 	   <i class="icon-cog icon-2x"></i></a>
-		
 		 <div class="media-body text-right">
 		  <h5 class="media-heading text-semibold">Distrito <?php echo $Distrito; ?></h5>
 		   <span class="text-muted">Gerenciar  Distrito</span>
@@ -132,14 +134,13 @@ color:white;
 	   </div>
 	  </div>
      </div>
-     <div class="col-md-4 col-xs-12">
+	<?php } else { } if ($PriD == "1") { ?>     
+     <!--<div class="col-md-4 col-xs-12">
       <div class="panel panel-body bg-purple-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
 	   <a href="" class="media-left media-middle" color="#ffffff"><i class="icon-file-text2 icon-2x"></i></a>
-		
 		 <div class="media-body text-right">
 		  <h5 class="media-heading text-semibold">Cadastro de Projetos</h5>
-		  
 		 </div>
 	   </div>
 	  </div>
@@ -148,13 +149,14 @@ color:white;
       <div class="panel panel-body bg-teal-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
 	   <a href="" class="media-left media-middle" color="#ffffff"><i class="icon-media icon-2x"></i></a>
-		
 		 <div class="media-body text-right">
 		  <h5 class="media-heading text-semibold">Imagem Pública</h5>
 		 </div>
 	   </div>
 	  </div>
-     </div>
+     </div> -->
+	<?php } else { } ?>
+
 
  
 

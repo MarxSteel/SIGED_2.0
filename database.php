@@ -5,19 +5,18 @@
  * File: Database Configuration
  */
 
-// database Connection variables
-//define('HOST', 'localhost:8889'); // Database host name ex. localhost
-//define('USER', 'root'); // Database user. ex. root ( if your on local server)
-//define('PASSWORD', 'root'); // Database user password  (if password is not set for user then keep it empty )
-//define('DATABASE', 'siged2'); // Database Database name
+define('HOST', 'localhost:8889'); 
+define('USER', 'root'); 
+define('PASSWORD', 'root'); 
+define('DATABASE', 'siged2');
 
-
+/*
 define('HOST', 'mysql.hostinger.com.br'); // Database host name ex. localhost
 define('USER', 'u220304474_sist'); // Database user. ex. root ( if your on local server)
 define('PASSWORD', 'kromw8tISH34'); // Database user password  (if password is not set for user then keep it empty )
 define('DATABASE', 'u220304474_sist'); // Database Database name
 
-
+*/
 
 
 

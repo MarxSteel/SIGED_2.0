@@ -51,3 +51,16 @@
 0x81 - ERRO AO ATUALIZAR SENHA
 0x98 - ERRO AO ALTERAR O STATUS DO CADASTRO DO ASSOCIADO NA QUANDO FAZ O CADASTRO DO ASSOCIADO
 0x99 - ERRO AO CADASTRAR EQUIPE DISTRITAL
+
+
+
+
+
+0.900 - Erro ao conceder acesso à página de clubes
+0.901 - Erro ao salvar log da concessão de permissão
+0.902 - Erro ao revogar acesso à página de clubes
+0.903 - Erro ao salvar log da retirada de permissão
+0.904 - Erro ao conceder acesso à página de Associados
+0.905 - Erro ao salvar log da concessão de Associados
+0.906 - Erro ao revogar acesso à página de Associados
+0.907 - Erro ao salvar log da retirada de permissão de Associados

@@ -74,6 +74,8 @@ function myFunction() {
 	  </div>
 	 </div>
 	</div>
+
+<?php if ($PriC == "1") { ?>
 	<div class="content">
     <!-- FLOAT -->
   <ul class="fab-menu fab-menu-fixed fab-menu-top-right" data-fab-toggle="click">
@@ -371,6 +373,15 @@ function myFunction() {
 	</div>
 <?php include_once '../footer.php'; ?>	
    </div><!-- /main content -->
+   <?php } else{
+    echo '
+     <div class="alert alert-danger alert-styled-left alert-bordered">
+      <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Fechar</span></button>
+      <h3><span class="text-semibold">Opa!</span> Não foi possível acessar a página! Você não possui privilégios para isso.</h3>.
+     </div>';
+  }
+    ?>
+   
   </div><!-- /page content -->
  </div><!-- /page container -->
 

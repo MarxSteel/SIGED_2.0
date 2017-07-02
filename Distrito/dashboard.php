@@ -1,7 +1,7 @@
 <?php
 include_once '../sess.php';
 include_once '../dados.php';
-$hosts = 'http://localhost:8888/interact/Interact/';
+$hosts = $server;
 include_once '../lib/qyuser.php';
 $aDist = 'class="active"';
   $db = DB();
@@ -55,8 +55,18 @@ $db = DB();
 function diretor($diretor, $cargo){
 $db = DB();
  $ChamaDiretor = $db->prepare("SELECT * FROM ic_socio where id='$diretor'");
-  $ChamaDiretor->execute();
-   $Ch = $ChamaDiretor->fetch();
+ $ChamaDiretor->execute();
+  $Ch = $ChamaDiretor->fetch();
+  $NomeDiretor = $Ch['nomeCom'];
+  $CodSocio = $Ch['id'];
+ 
+ $ChamaPriv = $db->prepare("SELECT * FROM priv WHERE codAss='$CodSocio'");
+  $ChamaPriv->execute();
+  $Pr = $ChamaPriv->fetch();
+  $PCl = $Pr['priC'];
+  $PAs = $Pr['priA'];
+
+
 	echo '
 	<div class="col-md-4 col-xs-12">
 	 <div class="thumbnail border-slate border-lg">
@@ -65,10 +75,30 @@ $db = DB();
 	  </div>
       <div class="caption text-center">
 	   <h6 class="text-semibold no-margin">' . substr($Ch['nomeCom'], 0, 15) . ' 
-	    <small class="display-block">' . $cargo . '</small></h6>
+	    <small class="display-block">' . $cargo . '</small></h6>';
+	     if ($PCl === "1") {
+		  echo '
+		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#InativaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
+	     }
+	     else{
+	      //BOTAO MODAL DE CONCEDER PRIVILÉGIOS
+	      echo '
+			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#AtivaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
+	      }
+	     if ($PAs === "1") {
+		  echo '
+		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#InativaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
+	     }
+	     else{
+	      //BOTAO MODAL DE CONCEDER PRIVILÉGIOS
+	      echo '
+			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#AtivaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
+	      }
+
+
+	    echo '
 	    <!-- botão de privilégio de clubes -->
-	    <button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" //data-target="#modalInativa" data-idvalue="' . $idCl . '"  data-whatever="' . $claNome . '"><b><i class="icon-x"></i></b> Inativar</button> 	  
-		   <a href="#" data-popup="tooltip" class="btn btn-default btn-block" title="Atualizar" data-container="body" align="center"><i class="icon-google-drive"></i></a>
+
 		  
 
 	  </div>
@@ -288,6 +318,257 @@ function myFunction() {
 
 
 
+<!-- INICIO DOS MODALS DE PRIVILEGIOS -->
+<!-- MODAL DE ATIVAR PRIVILEGIO DE CLUBE -->	 
+<div class="modal fade" id="AtivaClubes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header bg-success">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+    </button>
+	<h6 class="modal-title">Cadastrar novo Membro de Equipe</h6>         
+   </div>
+   <div class="modal-body">
+	Você está concedendo acesso à página dos clubes a este diretor. Tens certeza?
+    <form name="AtivaClubes" id="reaativaCL" method="post" action="" enctype="multipart/form-data">
+     <div class="form-group">
+      <div class="col-md-8">Diretor: 
+        <input type="text" class="form-control" name="nomeClubeIn" id="modal-titulo">
+      </div>
+      <div class="col-md-4">ID:
+       <div class="modal-valor">
+        <input type="text" class="form-control" name="idClubeIn" id="modal-valor">
+       </div>
+      </div>
+     </div>
+   </div>
+   <div class="modal-footer"><br /><br /><br />
+    <input name="AtivaClubes" type="submit" class="btn bg-success-400 btn-block btn-lg" value="Tenho certeza, Conceder Acesso"  />
+    </form>
+    <?php 
+    if(@$_POST["AtivaClubes"])
+    {
+    $clubeNome = $_POST['nomeClubeIn']; //ID DO PRODUTO
+    $idClube = $_POST['idClubeIn']; //ID DO PRODUTO
+  	 $reativarCl = $db->query("UPDATE priv SET priC='1' WHERE codAss='$idClube'");
+  	 if ($reativarCl) {
+  	 $DataCad = date('Y-m-d H:i:s');
+     $Descrito = "Privilegio de acessar página de clubs concedido. <br />Associado: " . $clubeNome;
+   	 $InLog = $db->query("INSERT INTO logs (user, logCod, descreve, dtCadastro) VALUES ('$nickname', '501', '$Descrito', '$DataCad')");
+      if ($InLog) 
+      {
+       echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Conceder%20Acesso&mensagem=Acesso%20Atualizado'</script>";
+      }
+      else
+      {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.901'</script>";      
+       //ELSE CADASTRAR LOG
+      }
+     }
+     else
+     {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.900'</script>";      
+
+  	  //ELSE INATIVAR CLUB
+     }
+    }
+    ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- MODAL DE ATIVAR PRIVILEGIO DE CLUBE -->	 
+<!-- MODAL DE INATIVAR PRIVILEGIO DE CLUBE -->	 
+<div class="modal fade" id="InativaClubes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header bg-danger">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+
+    </button>
+	<h6 class="modal-title">Cadastrar novo Membro de Equipe</h6>
+
+   </div>
+   <div class="modal-body">
+	Você está revogando acesso à página dos clubes a este diretor. Tens certeza?
+    <form name="InativaClubes" id="reaativaCL" method="post" action="" enctype="multipart/form-data">
+     <div class="form-group">
+      <div class="col-md-8">Diretor:
+        <input type="text" class="form-control" name="nomeClubeIn" id="modal-titulo">
+      </div>
+      <div class="col-md-4">ID:
+       <div class="modal-valor">
+        <input type="text" class="form-control" name="idClubeIn" id="modal-valor">
+       </div>
+      </div>
+     </div>
+   </div>
+   <div class="modal-footer"><br /><br /><br />
+    <input name="InativaClubes" type="submit" class="btn bg-danger-400 btn-block btn-lg" value="Tenho certeza, revogar Acesso"  />
+    </form>
+    <?php 
+    if(@$_POST["InativaClubes"])
+    {
+    $clubeNome = $_POST['nomeClubeIn']; //ID DO PRODUTO
+    $idClube = $_POST['idClubeIn']; //ID DO PRODUTO
+  	 $reativarCl = $db->query("UPDATE priv SET priC='0' WHERE codAss='$idClube'");
+  	 if ($reativarCl) {
+  	 $DataCad = date('Y-m-d H:i:s');
+     $Descrito = "Privilegio de acessar página de clubs retirado. <br />Associado: " . $clubeNome;
+   	 $InLog = $db->query("INSERT INTO logs (user, logCod, descreve, dtCadastro) VALUES ('$nickname', '502', '$Descrito', '$DataCad')");
+      if ($InLog) 
+      {
+       echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Conceder%20Acesso&mensagem=Acesso%20Atualizado'</script>";
+      }
+      else
+      {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.903'</script>";      
+       //ELSE CADASTRAR LOG
+      }
+     }
+     else
+     {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.902'</script>";      
+
+  	  //ELSE INATIVAR CLUB
+     }
+    }
+    ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- //MODAL INATIVAR PRIVILEGIO DE CLUBE -->
+<!-- MODAL DE ATIVAR PRIVILEGIO DE CLUBE -->	 
+<div class="modal fade" id="AtivaSocios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header bg-success">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+    </button>
+	<h6 class="modal-title">Cadastrar novo Membro de Equipe</h6>         
+   </div>
+   <div class="modal-body">
+	Você está concedendo acesso à página dos clubes a este diretor. Tens certeza?
+    <form name="AtivaSocios" id="reaativaCL" method="post" action="" enctype="multipart/form-data">
+     <div class="form-group">
+      <div class="col-md-8">Diretor: 
+        <input type="text" class="form-control" name="nomeClubeIn" id="modal-titulo">
+      </div>
+      <div class="col-md-4">ID:
+       <div class="modal-valor">
+        <input type="text" class="form-control" name="idClubeIn" id="modal-valor">
+       </div>
+      </div>
+     </div>
+   </div>
+   <div class="modal-footer"><br /><br /><br />
+    <input name="AtivaSocios" type="submit" class="btn bg-success-400 btn-block btn-lg" value="Tenho certeza, Conceder Acesso"  />
+    </form>
+    <?php 
+    if(@$_POST["AtivaSocios"])
+    {
+    $clubeNome = $_POST['nomeClubeIn']; //ID DO PRODUTO
+    $idClube = $_POST['idClubeIn']; //ID DO PRODUTO
+  	 $reativarCl = $db->query("UPDATE priv SET priA='1' WHERE codAss='$idClube'");
+  	 if ($reativarCl) {
+  	 $DataCad = date('Y-m-d H:i:s');
+     $Descrito = "Privilegio de acessar página de associados concedido. <br />Associado: " . $clubeNome;
+   	 $InLog = $db->query("INSERT INTO logs (user, logCod, descreve, dtCadastro) VALUES ('$nickname', '503', '$Descrito', '$DataCad')");
+      if ($InLog) 
+      {
+       echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Conceder%20Acesso&mensagem=Acesso%20Atualizado'</script>";
+      }
+      else
+      {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.905'</script>";      
+       //ELSE CADASTRAR LOG
+      }
+     }
+     else
+     {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.904'</script>";      
+
+  	  //ELSE INATIVAR CLUB
+     }
+    }
+    ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- MODAL DE ATIVAR PRIVILEGIO DE CLUBE -->	 
+<!-- MODAL DE INATIVAR PRIVILEGIO DE CLUBE -->	 
+<div class="modal fade" id="InativaSocios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header bg-danger">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+
+    </button>
+	<h6 class="modal-title">Cadastrar novo Membro de Equipe</h6>
+
+   </div>
+   <div class="modal-body">
+	Você está revogando acesso à página dos clubes a este diretor. Tens certeza?
+    <form name="InativaSocios" id="reaativaCL" method="post" action="" enctype="multipart/form-data">
+     <div class="form-group">
+      <div class="col-md-8">Diretor:
+        <input type="text" class="form-control" name="nomeClubeIn" id="modal-titulo">
+      </div>
+      <div class="col-md-4">ID:
+       <div class="modal-valor">
+        <input type="text" class="form-control" name="idClubeIn" id="modal-valor">
+       </div>
+      </div>
+     </div>
+   </div>
+   <div class="modal-footer"><br /><br /><br />
+    <input name="InativaSocios" type="submit" class="btn bg-danger-400 btn-block btn-lg" value="Tenho certeza, revogar Acesso"  />
+    </form>
+    <?php 
+    if(@$_POST["InativaSocios"])
+    {
+    $clubeNome = $_POST['nomeClubeIn']; //ID DO PRODUTO
+    $idClube = $_POST['idClubeIn']; //ID DO PRODUTO
+  	 $reativarCl = $db->query("UPDATE priv SET priA='0' WHERE codAss='$idClube'");
+  	 if ($reativarCl) {
+  	 $DataCad = date('Y-m-d H:i:s');
+     $Descrito = "Privilegio de acessar página de associados retirado. <br />Associado: " . $clubeNome;
+   	 $InLog = $db->query("INSERT INTO logs (user, logCod, descreve, dtCadastro) VALUES ('$nickname', '504', '$Descrito', '$DataCad')");
+      if ($InLog) 
+      {
+       echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Conceder%20Acesso&mensagem=Acesso%20Atualizado'</script>";
+      }
+      else
+      {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.907'</script>";      
+       //ELSE CADASTRAR LOG
+      }
+     }
+     else
+     {
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Clube&mensagem=Não%20foi%20possível%20Atualizar.%20Erro:%200.906'</script>";      
+
+  	  //ELSE INATIVAR CLUB
+     }
+    }
+    ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- //MODAL INATIVAR PRIVILEGIO DE CLUBE -->
+<!-- FIM DOS MODALS DE PRIVILEGIOS -->
+
+
+
+
+
 		  </div>
 		 </div>
 		</div>
@@ -303,6 +584,7 @@ function myFunction() {
 
 	<?php 
 	include_once 'modals.php';
+	include_once 'mailLogin.php';
 	include_once '../footer.php'; 
 
 	?>
@@ -349,5 +631,57 @@ function myFunction() {
  <script type="text/javascript" src="../assets/js/pages/extra_fab.js"></script>
  <script type="text/javascript" src="../assets/js/pages/user_pages_team.js"></script>
  <script type="text/javascript" src="../assets/js/pages/colors_slate.js"></script>
+<script type="text/javascript">
+	$('#AtivaClubes').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var idvalor = button.data('idvalue') 
+  var recipient = button.data('whatever')
+  var nomeClubeInativar = button.data('whatever')
+  var modal = $(this)
+  modal.find('.modal-title').text('Permitir Acesso à página Clubes a:  ' + nomeClubeInativar)
+  modal.find('.modal-body input').val(nomeClubeInativar)
+  modal.find('.modal-valor input').val(idvalor)
+})
+</script>
+<script type="text/javascript">
+	$('#InativaClubes').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var idvalor = button.data('idvalue') 
+  var recipient = button.data('whatever')
+  var nomeClubeInativar = button.data('whatever')
+  var modal = $(this)
+  modal.find('.modal-title').text('remover Acesso à página Clubes a:  ' + nomeClubeInativar)
+  modal.find('.modal-body input').val(nomeClubeInativar)
+  modal.find('.modal-valor input').val(idvalor)
+})
+</script>
+<!-- MODAL DE ATIVAR SOCIOS -->
+<script type="text/javascript">
+	$('#AtivaSocios').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var idvalor = button.data('idvalue') 
+  var recipient = button.data('whatever')
+  var nomeClubeInativar = button.data('whatever')
+  var modal = $(this)
+  modal.find('.modal-title').text('Permitir acesso à página associados a:  ' + nomeClubeInativar)
+  modal.find('.modal-body input').val(nomeClubeInativar)
+  modal.find('.modal-valor input').val(idvalor)
+})
+</script>
+<!-- MODAL DE ATIVAR SOCIOS -->
+<!-- MODAL DE INATIVAR SOCIOS -->
+<script type="text/javascript">
+	$('#InativaSocios').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var idvalor = button.data('idvalue') 
+  var recipient = button.data('whatever')
+  var nomeClubeInativar = button.data('whatever')
+  var modal = $(this)
+  modal.find('.modal-title').text('remover acesso à página associados a:  ' + nomeClubeInativar)
+  modal.find('.modal-body input').val(nomeClubeInativar)
+  modal.find('.modal-valor input').val(idvalor)
+})
+</script>
+<!-- MODAL DE INATIVAR SOCIOS -->
 
 </html>

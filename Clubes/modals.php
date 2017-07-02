@@ -393,7 +393,7 @@
      $nbairro = $_POST['bairro'];
      $ncidade = $_POST['cidade'];
      $nUF = $_POST['UF'];
-     $AtEnd = $db->query("UPDATE ic_clube SET eRua='$nrua', eNum='$nnum', eBair='$nbairro', eCid='$ncidade', eCEP='$ncep', eUF='$nUF', eCom='$ncomp', rLocal='$nLocal', rPer='$nperiodo', rSem='$nsemana', rHora='$nhorario'");
+     $AtEnd = $db->query("UPDATE ic_clube SET eRua='$nrua', eNum='$nnum', eBair='$nbairro', eCid='$ncidade', eCEP='$ncep', eUF='$nUF', eCom='$ncomp', rLocal='$nLocal', rPer='$nperiodo', rSem='$nsemana', rHora='$nhorario' WHERE id='$ClID'");
       if ($AtEnd) {
         $DataLog = date('Y-m-d H:i:s');
         $Descricao = "Atualizado Endereços<br />";
