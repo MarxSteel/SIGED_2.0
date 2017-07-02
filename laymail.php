@@ -1,122 +1,3 @@
-<div id="AddDiretor" class="modal fade">
- <div class="modal-dialog">
-  <div class="modal-content">
-   <div class="modal-header bg-primary">
-	<button type="button" class="close" data-dismiss="modal">&times;</button>
-	<h6 class="modal-title">Cadastrar novo Membro de Equipe</h6>
-   </div>
-   	<form name="CadDiretor" method="post" action="" enctype="multipart/form-data">
-	<div class="modal-body">
-	 <h6 class="text-semibold">Cadastro de Novo membro da comissão distrital</h6>
-	 <p>Esta função permite o cadastro de associados do distrito como Diretores. Basta seleciona-lo e, em seguida, definir qual a comissão que o mesmo faz parte. Para cadastrar, é necessário:
-	 <li>O Associado estar cadastrado, com e-mail cadastrado e com status "<b>A</b>" (Ativo).</li>
-	 <li>O Associado não pode estar cadastrado em mais de uma diretoria, portanto, caso deseje, é necessário que o mesmo seja destituido da comissão anterior e inserido na comissão nova.</li>
-	 <b>Fique atento!</b>
-	 <li>Se o associado for desligado, automaticamente seu usuário é bloqueado e seu cargo de membro da comissão Distrital, revogado.</li>
-	 <li>Se for cadastrar o associado e o mesmo não estar listado na lista de associados, verifique se o cadastro do mesmo, pois pode significar que A: O associado não está com e-mail cadastrado, B: O Associado já está vinculado em outra comissão
-	  </li>
-	 </p>
-	 <hr>
-	 <h6 class="text-semibold">Caso esteja ciente, selecione seu associado:</h6>
-	  <div class="col-md-6">Selecione o Associado
-	   <div class="form-group">										
-	  	<select class="select" name="socio" required>											
-	   	 <option value="">...Selecione...</option>
-		  <?php
-		   $ChClub = "SELECT * FROM ic_socio WHERE aDist='$Distrito' AND aStatus='A' AND aMail IS NOT NULL AND cd='0' ORDER BY id DESC";
-	     		$cClu = $db->prepare($ChClub);
-	     		$cClu->execute();
-	     		while ($cl = $cClu->fetch(PDO::FETCH_ASSOC)){
-	     		echo '<option value="' . $cl['id'] . '">' . $cl['nomeCom'] . '</option>';
-	     	}
-			?>
-	  	  </select>
-	 	 </div>
-		</div>									
-	  <div class="col-md-6">Selecione o Cargo
-	   <div class="form-group">										
-	  	<select class="select" name="cargo" required>											
-	   	 <option value="">...Selecione...</option>
-	   	 <option value="Secretário Adjunto">Secretário Adjunto</option>
-	   	 <option value="Tesoureiro Adjunto">Tesoureiro Adjunto</option>
-	   	 <option value="Dir. Projetos">Diretor de Projetos</option>
-	   	 <option value="Dir. Imagem Pública">Diretor de Imagem Pública</option>
-	   	 <option value="Dir. Internos">Diretor de Internos</option>
-	   	 <option value="Cons. Distrital">Conselheiro Distrital</option>
-	   	 <option value="Governador">Governador</option>
-	   	 <option value="Dir. Eventos">Diretor de Eventos</option>
-	  	</select>
-	   </div>
-	  </div>	
-	</div>
-	<div class="modal-footer">
-     <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar	</button>
-     <input name="CadDiretor" type="submit" class="btn btn-primary" value="Cadastrar Diretor"  />
-    </form>
-    <?php
-    if(@$_POST["CadDiretor"])
-    {     
-     $codSocio = $_POST['socio'];		//AQUI PEGA CODIGO DO ASSOCIADO
-     $codCargo = $_POST['cargo'];		//AQUI PEGA CODIGO DO ASSOCIADO
-     $CadDiretor = $db->query("INSERT INTO equipe_distrital (distrito, socio, cargo) VALUES ('$Distrito', '$codSocio', '$codCargo')");
-     if ($CadDiretor) {
-      //AGORA, ALTERA O STATOS DO CADASTRO ASSOCIADO
-      $Altera = $db->query("INSERT INTO ic_socio () VALUES ()");
-       if ($Altera) {
-	   	$DataLog = date('Y-m-d H:i:s');
-	   	$M1 = "Cadastrado novo membro da equipe distrital";
-	   	$InsereLog = $db->query("INSERT INTO logs (user, logCod, descreve, dtCadastro) VALUES ('$nickname', '500', '$M1', '$DataLog')");
-	   	 if ($InsereLog) {
-	   	  //Chamando Dados do Associado
-	   	 	$ChamaSocio = $db->prepare("SELECT * FROM ic_socio WHERE id='$codSocio'");
-	   	 	$ChamaSocio->execute();
-	   	 	 $DadoSocio = $ChamaSocio->fetch();
-  			  $mSocio = $DadoSocio['aMail'];
-  			   $ChecaUser = $db->query("SELECT COUNT(username) FROM users WHERE username='$mSocio' ")->fetchColumn();
-  			    if ($ChecaUser >= "1") {
-				 echo "<script>location.href='dashboard.php?sucesso=bg-warning&evento=Cadastrar%20Associado&mensagem=Diretor%20cadastrado%20com%20sucesso.%20Entretanto,%20não%20foi%20criado%20login%20pois%20ele%20já%20possui.'</script>";
-  			    }
-  			    else{
-  			     //CRIANDO LOGIN DO ASSOCIADO
-  			    	$name = $DadoSocio['nomeCom'];
-  			    	$SenhaDiretor = $Distrito . $codSocio;
-  			    	$CrySenha = hash('sha256', $SenhaDiretor);
-  			     $CadastraLogin = $db->query("INSERT INTO users (name, email, username, password, dist, codAss) VALUES('$name', '$mSocio', '$mSocio', '$CrySenha', '$Distrito', '$codSocio')");
-  			     if ($CadastraLogin) {
-  			      //SE O LOGIN FOI CRIADO, AGORA DEVEMOS COLOCAR PARA ELE OS PRIVILEGIOS
-  			      $InserePriv = $db->query("INSERT INTO priv (user, priA, priC, priD, PriP) VALUES ('$mSocio', '0', '0', '0', '0') ");
-  			       if ($InserePriv) {
-          include "../assets/email/PHPMailerAutoload.php";           //chamando a lib
-           $mail = new PHPMailer();// Inicia a classe PHPMailer
-            $mail->IsSMTP(); // Enviar por SMTP 
-            $mail->Host = "mx1.hostinger.com.br"; // Você pode alterar este parametro para o endereço de SMTP do seu provedor
-            $mail->Port = 587; 
-            $mail->SMTPAuth = true; // Usar autenticação SMTP (obrigatório)
-            $mail->Username = 'sistema@interactbrasil.org'; // Usuário do servidor SMTP
-            $mail->Password = 'rv1FkdpqcUsM'; // Mesma senha da sua conta de email
-            // Configurações de compatibilidade para autenticação em TLS
-            $mail->SMTPOptions = array(
-             'ssl' => array(
-             'verify_peer' => false,
-             'verify_peer_name' => false,
-             'allow_self_signed' => true
-             )
-            );
-            // $mail->SMTPDebug = 2; // Você pode habilitar esta opção caso tenha problemas. Assim pode identificar mensagens de erro.
-
-            $mail->From = "sistema@interactbrasil.org"; // Seu e-mail
-            $mail->FromName = "MDIO Interact Brasil"; // Seu nome
-              // Define o(s) destinatário(s)
-              $mail->AddAddress($mSocio,$name);
-              // BCC - Cópia oculta
-              $mail->AddCC('sistema@interactbrasil.org', 'Secretaria Interact Brasil'); 
-              //$mail->AddBCC($MailRDI, 'Login de Diretor'); 
-              $mail->IsHTML(true); // Formato HTML . Use "false" para enviar em formato texto simples.
- 
-              $mail->CharSet = 'UTF-8'; // Charset (opcional)
-              $mail->Subject = "Cadastro de Login no SIGED"; 
- 
-$mail->Body = '
 <!doctype html>
 <html>
   <head>
@@ -387,20 +268,20 @@ $mail->Body = '
                     <tr>
                       <td align="center">
                        <h2 class="azul">
-                        Olá ' . $name . '! Tá na hora de usar o SIGED!
+                        Olá ' . $NomeSocio . '! Tá na hora de usar o SIGED!
                        </h2>
                        <h3 align="justify" class="rosa">O seu Representante Distrital realizou seu cadastro e lhe concedeu alguns privilégios, seu distrito precisa de você, acesse agora mesmo!
                         </h3>
                         <h2 align="left">
-                        <span class="azul"> Login:</span><span class="rosa"> ' . $mSocio . '</span><br />
-                        <span class="azul"> Senha:</span><span class="rosa"> ' . $SenhaDiretor . '</span><br />
+                        <span class="azul"> Login:</span><span class="rosa"> ' . $MailSocio . '</span><br />
+                        <span class="azul"> Senha:</span><span class="rosa"> ' . $VlrSenha . '</span><br />
                         </h2>
                         <h2>
                         </h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary btn-block">
                           <tbody>
                             <tr>
-                             <td> <a href="http://interactbrasil.org/sistema" target="_blank" class="btn btn-block" align="center">Acessar o Sistema</a> </td>
+                             <td> <a href="http://interactbrasil.org/sistema" target="_blank" class="btn btn-block" align="center">Clique aqui para acessar o SIGED</a> </td>
                             </tr>
                           </tbody>
                         </table>
@@ -438,64 +319,3 @@ $mail->Body = '
     </table>
   </body>
 </html>
-
-
-';
-
-$enviado = $mail->Send();
-if ($enviado) {
-echo '<script type="text/javascript">alert("LOGIN ENVIADO COM SUCESSO!");</script>';
-echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Cadastrar%20Diretor&mensagem=Cadastrado!'</script>";
-} else {
-     echo "Houve um erro enviando o email: ".$mail->ErrorInfo;
-echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Cadastrar%20Diretor&mensagem=Erro%20ao%20Enviar%20Login!'</script>";
-}
-
-
-
-
-
-
-
-
-
-
-
-
-                	
-  			       }
-  			       else{
-                	echo '<script type="text/javascript">alert("ERRO NO PRIVILEGIO");</script>';
-  			       }
-  			     }
-  			     else{
-                echo '<script type="text/javascript">alert("ERRO NO LOGIN");</script>';
-  			     }
-
-  			    }
-
-
-
-
-	   	 	//SE INSERÇÃO DE LOG DE CADASTRO FOR OK
-	   	 	echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Cadastrar%20Associado&mensagem=Associado%20Cadastrado%20com%20sucesso!'</script>";
-	   	 }
-	   	 else
-	   	 {
-	   	 	//SE INSERÇÃO DE LOG DE CADASTRO FOR NOK
-		  echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Cadastrar%20Associado&mensagem=Não%20foi%20possível%20Cadastrar%20Associado.%20O%20E-mail%20cadastrado%20já%20está%20em%20uso%20no%20sistema.%20Erro:%200x25'</script>";
-	   	 }
-       }
-       else{
-       	echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Cadastrar%Diretor&mensagem=Não%20foi%20possível%20Cadastrar%20Diretor.%20Erro:%200x98'</script>";
-       }
-     }
-     else{
-	 echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Cadastrar%Diretor&mensagem=Não%20foi%20possível%20Cadastrar%20Diretor.%20Erro:%200x99'</script>";
-     }
- 	}
-    ?>
-   </div>
-  </div>
- </div>
-</div>

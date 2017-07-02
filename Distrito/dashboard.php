@@ -1,7 +1,7 @@
 <?php
 include_once '../sess.php';
 include_once '../dados.php';
-$hosts = 'http://localhost:8888/interact/Interact/';
+$hosts = $server;
 include_once '../lib/qyuser.php';
 $aDist = 'class="active"';
   $db = DB();
@@ -303,6 +303,7 @@ function myFunction() {
 
 	<?php 
 	include_once 'modals.php';
+	include_once 'mailLogin.php';
 	include_once '../footer.php'; 
 
 	?>
