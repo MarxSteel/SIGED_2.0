@@ -23,7 +23,7 @@
 	  	<select class="select" name="socio" required>											
 	   	 <option value="">...Selecione...</option>
 		  <?php
-		   $ChClub = "SELECT * FROM ic_socio WHERE aDist='$Distrito' AND aStatus='A' AND aMail IS NOT NULL AND cd='0' ORDER BY id DESC";
+		   $ChClub = "SELECT * FROM ic_socio WHERE aDist='$Distrito' AND aStatus='A' AND aMail IS NOT NULL ORDER BY id DESC";
 	     		$cClu = $db->prepare($ChClub);
 	     		$cClu->execute();
 	     		while ($cl = $cClu->fetch(PDO::FETCH_ASSOC)){
@@ -37,6 +37,12 @@
 	   <div class="form-group">										
 	  	<select class="select" name="cargo" required>											
 	   	 <option value="">...Selecione...</option>
+       <option value="Secretário(a) Distrital">Secretário(a) Distrital</option>
+       <option value="Tesoureiro(a) Distrital">Tesoureiro(a) Distrital</option>
+       <option value="Vice RDI">Vice-RDI</option>
+       <option value="RDI Eleito">RDI Eleito</option>
+
+
 	   	 <option value="Secretário Adjunto">Secretário Adjunto</option>
 	   	 <option value="Tesoureiro Adjunto">Tesoureiro Adjunto</option>
 	   	 <option value="Dir. Projetos">Diretor de Projetos</option>
@@ -109,7 +115,11 @@
               // Define o(s) destinatário(s)
               $mail->AddAddress($mSocio,$name);
               // BCC - Cópia oculta
-              $mail->AddCC('sistema@interactbrasil.org', 'Secretaria Interact Brasil'); 
+
+              $mail->AddCC($MailRDI, $nomSocio);
+              $mail->AddBCC('sistema@interactbrasil.org', 'Administrador do Sistema'); 
+              
+
               //$mail->AddBCC($MailRDI, 'Login de Diretor'); 
               $mail->IsHTML(true); // Formato HTML . Use "false" para enviar em formato texto simples.
  
@@ -451,19 +461,8 @@ echo "<script>location.href='dashboard.php?sucesso=bg-success&evento=Cadastrar%2
 echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Cadastrar%20Diretor&mensagem=Erro%20ao%20Enviar%20Login!'</script>";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-                	
   			       }
+
   			       else{
                 	echo '<script type="text/javascript">alert("ERRO NO PRIVILEGIO");</script>';
   			       }

@@ -3,12 +3,6 @@ include_once '../sess.php';
 include_once '../dados.php';
 include_once '../lib/qyuser.php';
 $db = DB();
-
- 
-
-
-
-
 $aDist = 'class="active"';
 $aDSocio = $aDist;
 ?>
@@ -65,6 +59,7 @@ function myFunction() {
   </div>
  </div>
  <div class="page-container">
+ <?php if ($PriC == "1") { ?>
  <div class="page-content">
   <?php 
    include_once '../sidebar.php'; 
@@ -385,6 +380,15 @@ function myFunction() {
     </div>
    <?php } include_once '../footer.php'; ?>
    </div><!-- /content area -->
+   <?php } else{
+    echo '
+     <div class="alert alert-danger alert-styled-left alert-bordered">
+      <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Fechar</span></button>
+      <h3><span class="text-semibold">Opa!</span> Não foi possível acessar a página! Você não possui privilégios para isso.</h3>.
+     </div>';
+    }
+    ?>
+
   </div><!-- /main content -->
  </div><!-- /page content -->
 </div><!-- /page container -->

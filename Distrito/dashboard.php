@@ -78,21 +78,21 @@ $db = DB();
 	    <small class="display-block">' . $cargo . '</small></h6>';
 	     if ($PCl === "1") {
 		  echo '
-		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#InativaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
+		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs btn-block" data-toggle="modal" data-target="#InativaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
 	     }
 	     else{
 	      //BOTAO MODAL DE CONCEDER PRIVILÉGIOS
 	      echo '
-			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#AtivaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
+			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs btn-block" data-toggle="modal" data-target="#AtivaClubes" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-flag3"></i></b> Clubes</button>';
 	      }
 	     if ($PAs === "1") {
 		  echo '
-		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#InativaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
+		   <button type="button" class="btn bg-success-400 btn-labeled btn-rounded btn-xs btn-block" data-toggle="modal" data-target="#InativaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
 	     }
 	     else{
 	      //BOTAO MODAL DE CONCEDER PRIVILÉGIOS
 	      echo '
-			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs" data-toggle="modal" data-target="#AtivaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
+			<button type="button" class="btn bg-danger-400 btn-labeled btn-rounded btn-xs btn-block" data-toggle="modal" data-target="#AtivaSocios" data-idvalue="' . $diretor . '"  data-whatever="' . $NomeDiretor . '"><b><i class="icon-users2"></i></b> Associados</button>';
 	      }
 
 
@@ -302,9 +302,6 @@ function myFunction() {
 	      </div>
 		  <div class="tab-pane fade" id="eqp">
 		   <?php 
-		    echo diretor($dSDI, 'Secretario(a) Distrital'); 
-		    echo diretor($dTDI, 'Tesoureiro(a) Distrital'); 
-		    echo diretor($dPDI, 'Protocolo Distrital');
 		    $Diretores = "SELECT * FROM equipe_distrital WHERE distrito='$Distrito'";
 		     $ListaDiretor = $db->prepare($Diretores);
 		     $ListaDiretor->execute();
