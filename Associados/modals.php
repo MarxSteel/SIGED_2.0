@@ -18,7 +18,7 @@
 		</div>
 		<div class="col-md-3">G&ecirc;nero
 		 <select class="form-control" name="genero" required>
-	      <option selected>...Selecione...</option>
+	      <option value="">...Selecione...</option>
 	      <option value="M">Masculino</option>
 		  <option value="F">Feminino</option>
 		 </select>

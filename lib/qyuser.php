@@ -26,7 +26,7 @@ $codAss = $user->codAss;
    $phoSocio = $Socio['foto'];			//FOTO DO ASSOCIADO
    $CodClub = $Socio['codClub'];		//CODIGO DO CLUBE
    $DtNasc = $Socio['dtNasc'];      //DT. NASC CLUBE
-
+   $MailRDI = $Socio['aMail'];
 
 /*
 ** CHAMANDO CLUBE DO ASSOCIADO
