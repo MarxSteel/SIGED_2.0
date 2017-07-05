@@ -41,8 +41,7 @@
        <option value="Tesoureiro(a) Distrital">Tesoureiro(a) Distrital</option>
        <option value="Vice RDI">Vice-RDI</option>
        <option value="RDI Eleito">RDI Eleito</option>
-
-
+       <option value="RDA">RDA</option>
 	   	 <option value="Secretário Adjunto">Secretário Adjunto</option>
 	   	 <option value="Tesoureiro Adjunto">Tesoureiro Adjunto</option>
 	   	 <option value="Dir. Projetos">Diretor de Projetos</option>
