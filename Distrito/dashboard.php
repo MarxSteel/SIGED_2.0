@@ -634,9 +634,6 @@ function myFunction() {
  <script type="text/javascript" src="../assets/js/pages/user_pages_team.js"></script>
  <script type="text/javascript" src="../assets/js/pages/colors_slate.js"></script>
 
-
-
-
   <!-- Theme JS files -->
   <script type="text/javascript" src="../assets/js/plugins/velocity/velocity.min.js"></script>
   <script type="text/javascript" src="../assets/js/plugins/velocity/velocity.ui.min.js"></script>
@@ -644,15 +641,6 @@ function myFunction() {
   <script type="text/javascript" src="../assets/js/plugins/buttons/ladda.min.js"></script>
   <script type="text/javascript" src="../assets/js/plugins/ui/ripple.min.js"></script>
   <!-- /theme JS files -->
-
-
-
-
-
-
-
-
-
 <script type="text/javascript">
   $('#AtivaClubes').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
