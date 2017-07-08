@@ -69,6 +69,12 @@ text-decoration:none;
 color:white;
 }
 
+.icon-2x:before {
+  color: white 
+}
+
+
+
 </style>
 </head>
 
@@ -135,10 +141,11 @@ color:white;
 	  </div>
      </div>
 	<?php } else { } if ($PriD == "1") { ?>     
-     <!--<div class="col-md-4 col-xs-12">
+     <div class="col-md-4 col-xs-12">
       <div class="panel panel-body bg-purple-400" style="background-image: url(assets/images/backgrounds/bg.png);">
 	   <div class="media no-margin">
-	   <a href="" class="media-left media-middle" color="#ffffff"><i class="icon-file-text2 icon-2x"></i></a>
+	   <a href="Projetos/dashboard.php" target="_blank" class="media-left media-middle" color="#ffffff">
+	    <i class="icon-files-empty icon-2x white"></i></a>
 		 <div class="media-body text-right">
 		  <h5 class="media-heading text-semibold">Cadastro de Projetos</h5>
 		 </div>
@@ -154,7 +161,7 @@ color:white;
 		 </div>
 	   </div>
 	  </div>
-     </div> -->
+     </div>
 	<?php } else { } ?>
 
 

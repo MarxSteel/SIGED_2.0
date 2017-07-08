@@ -8,7 +8,7 @@
 define('HOST', 'localhost:8889'); 
 define('USER', 'root'); 
 define('PASSWORD', 'root'); 
-define('DATABASE', 'siged2');
+define('DATABASE', 'siged');
 
 /*
 define('HOST', 'mysql.hostinger.com.br'); // Database host name ex. localhost
@@ -45,24 +45,7 @@ function db_connect()
  * Converte datas entre os padrões ISO e brasileiro
  * Fonte: http://rberaldo.com.br/php-conversao-de-datas-formato-brasileiro-e-formato-iso/
  */
-function dateConvert($date)
-{
-    if ( ! strstr( $date, '/' ) )
-    {
-        // $date está no formato ISO (yyyy-mm-dd) e deve ser convertida
-        // para dd/mm/yyyy
-        sscanf($date, '%d-%d-%d', $y, $m, $d);
-        return sprintf('%02d/%02d/%04d', $d, $m, $y);
-    }
-    else
-    {
-        // $date está no formato brasileiro e deve ser convertida para ISO
-        sscanf($date, '%d/%d/%d', $d, $m, $y);
-        return sprintf('%04d-%02d-%02d', $y, $m, $d);
-    }
- 
-    return false;
-}
+
 
 function TiraCaractere($string) {
 

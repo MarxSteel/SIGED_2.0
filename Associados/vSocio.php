@@ -5,35 +5,23 @@ include_once '../lib/qyuser.php';
 
 $ClID = $_GET['ID'];
 $db = DB();
+$DadosSocio = $db->prepare("SELECT * FROM ic_socio WHERE id='$ClID'");
+$DadosSocio->execute();
+ $DS = $DadosSocio->fetch();
+  $NomeSocio = $DS['nomeCom'];
+  $DistSocio = $DS['aDist'];
+  $NascSocio = $DS['dtNasc'];
+  $PossSocio = $DS['dataPosse'];
+  $FotoSocio = $DS['foto'];
+  $idClube = $DS['codClub'];
 
-$QtSocios = $db->query("SELECT COUNT(*) FROM ic_socio WHERE codClub='$ClID' AND aStatus='A'")->fetchColumn();
+$ChamaClube = $db->prepare("SELECT * FROM ic_clube WHERE id='$idClube'");
+$ChamaClube->execute();
+ $DC = $ChamaClube->fetch();
+  $NomeClube = $DC['clubeNome'];
 
 
- $ChamaCl = $db->prepare("SELECT * FROM ic_clube WHERE id='$ClID'");
- $ChamaCl->execute();
-  $Cl = $ChamaCl->fetch();
-   $ClNome = $Cl['clubeNome'];				//NOME DO CLUBE
-   $CapaClube = $Cl['cover'];				//NOME DO CLUBE
-   $DataFundado = $Cl['dtFundacao'];		//DATA DE FUNDAÇÃO DO CLUB
-   $MailClube = $Cl['mailContato'];			//DATA DE FUNDAÇÃO DO CLUB
-   $Rotary = $Cl['rcPadrinho'];			//DATA DE FUNDAÇÃO DO CLUB
-   	//CHAMANDO DADOS DE REUNIÃO
-   $DiaSemana = $Cl['rSem'];			//DIA DA SEMANA
-   $Periodo = $Cl['rPer'];				//PERIDIOCIDADE DE REUNIÃO
-   $Horario = $Cl['rHora'];				//HORÁRIO DE REUNIÃO
-   $LocalReuni = $Cl['rLocal'];			//LOCAL DE REUNIÃO
-    //CHAMANDO ENDEREÇO
-   $endRua = $Cl['eRua'];
-   $endNum = $Cl['eNum'];
-   $endBair = $Cl['eBair'];
-   $endCEP = $Cl['eCEP'];
-   $endUF = $Cl['eUF'];
-   $endCidade = $Cl['eCid'];
-   $endComp = $Cl['eCom'];
-    //Diretoria
-   $Pre = $Cl['pres'];					//PRESIDENTE
-   $Sec = $Cl['sec'];					//SECRETÁRIO
-   $Tes = $Cl['tes'];					//TESOUREIRO
+
 
 
 
@@ -124,14 +112,14 @@ function myFunction() {
 	  <div class="media">
 	   <div class="media-left">
 		<a href="#" class="profile-thumb">
-		 <img src="../assets/images/placeholder.jpg" class="img-circle" alt="">
+		 <img src="../assets/images/perfil/<?php echo $FotoSocio; ?>" class="img-circle" alt="">
 		</a>
 	   </div>
 	   <div class="media-body">
-		<h1>Nome do Associado 
+		<h1><?php echo $NomeSocio; ?>
 		 <small class="display-block">
-		 Interact Club de NOME DA CIDADE<br />
-		 Distrito 1234
+		 Interact Club de <?php echo $NomeClube; ?><br />
+		 Distrito <?php echo $DistSocio; ?>
 		 </small>
 		</h1>
 	   </div>
@@ -139,10 +127,10 @@ function myFunction() {
 	    <div class="media-right media-middle">
 		 <ul class="list-inline list-inline-condensed no-margin-bottom text-nowrap">
  		  <li class="col-xs-6">
-		   <a class="btn btn-default btn-block">Data de Posse: 10/10/2010</a>
+		   <a class="btn btn-default btn-block">Data de Posse: <?php echo dateConvert($PossSocio);?></a>
 		  </li>
 		  <li class="col-xs-6">
-		   <a class="btn btn-default btn-block">Data de Nascimento: 10/10/2010</a>
+		   <a class="btn btn-default btn-block">Data de Nascimento: <?php echo dateConvert($NascSocio);?></a>
  		  </li>
 	 	 </ul>
 	    </div>

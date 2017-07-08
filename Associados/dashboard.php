@@ -127,14 +127,14 @@ function myFunction() {
      	 }	
      	 else
      	 {
-         echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x16'</script>";  
+         echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x16'</script>";  
       	 //ELSE CADASTRAR LOG
      	 }
-         echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x17'</script>";         	
+         echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x17'</script>";         	
        	}
-       	echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x18'</script>";         	
+       	echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x18'</script>";         	
        }
-	   echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x19'</script>";         	       
+	   echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Desativar%20Associado&mensagem=Não%20foi%20possível%20desativar%20associado.%20Erro:%200x19'</script>";         	       
       }
   	 }
     }
@@ -187,13 +187,13 @@ function myFunction() {
       }
       else
       {
-        echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Reativar%20Associado&mensagem=Não%20foi%20possível%20reativar%20Associado.%20Erro:%200x11'</script>";      
+        echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Associado&mensagem=Não%20foi%20possível%20reativar%20Associado.%20Erro:%200x11'</script>";      
        //ELSE CADASTRAR LOG
       }
      }
      else
      {
-      echo "<script>location.href='vClube.php?sucesso=bg-danger&evento=Reativar%20Associado&mensagem=Não%20foi%20possível%20reativar%20Associado.%20Erro:%200x12'</script>"; 
+      echo "<script>location.href='dashboard.php?sucesso=bg-danger&evento=Reativar%20Associado&mensagem=Não%20foi%20possível%20reativar%20Associado.%20Erro:%200x12'</script>"; 
   	  //ELSE INATIVAR CLUB
      }
     }
@@ -287,7 +287,7 @@ function myFunction() {
 			        </td>';
 			 echo '<td>';
              echo '<a class="btn bg-teal-400 btn-labeled btn-rounded btn-xs" href="javascript:abrir(';
-             echo "'vSocio.php?ID=" . $claNome . "');";
+             echo "'vSocio.php?ID=" . $idCl . "');";
              echo '"><b><i class="icon-search4"></i></b> Visualizar</a>';
              echo '</td>';
 			 echo '</tr>';
